@@ -1,0 +1,144 @@
+body {
+    background-size: cover;
+    background-color: peachpuff;
+}
+
+.container1 {
+    padding: 20vh 5vh;
+    z-index: 1;
+    position: relative;
+}
+
+.container2 {
+    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    position: fixed;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.container2.hidden {
+    opacity: 0;
+    pointer-events: none;
+    display: none;
+}
+
+.card1 {
+    background-color: #c99689;
+    height: auto;
+    width: auto;
+    border: 3px solid #ad7d79;
+    border-radius: 2rem;
+}
+
+.game {
+    background-color: silver;
+    width: 90vw;
+    height: 50vh;
+}
+
+.gameContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 10%;
+}
+
+.gameContainer h3 {
+    font-family: "Federant", serif;
+    color: white;
+    font-size: clamp(2rem, 2vw, 5rem);
+    pointer-events: auto;
+    z-index: 10000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
+}
+
+.gameContainer h3:hover {
+    transform: scale(1.1);
+    color: black;
+    -webkit-text-stroke: 1px white;
+    text-shadow: none;
+}
+
+.gBackground {
+    height: fit-content;
+    width: 90%;
+    background: url("https://images.squarespace-cdn.com/content/v1/551a19f8e4b0e8322a93850a/1573952967368-Y1FYKQ2QP2R4SPM9YYQA/Parallax_No_Car.gif");
+    background-position: -50%;
+}
+
+.character {
+    height: 50vh;
+    top: 0%;
+}
+
+button {
+    width: 150px;
+    height: 50px;
+    margin: 5% 2%;
+    border-radius: 1rem;
+    border: none;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+}
+
+button:hover {
+    transform: scale(1.08);
+    box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.6);
+}
+
+.cursor-circle {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    pointer-events: none;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 2px solid white;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.15s ease, height 0.15s ease;
+    mix-blend-mode: difference;
+    z-index: 99999;
+}
+
+button:hover ~ .cursor-circle {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+button:hover ~ .cursor-circle.combine {
+    width: 80px;
+    height: 80px;
+}
+
+.yes {
+    background-color: brown;
+    box-shadow: 0px 0px 20px rgb(255, 255, 255);
+}
+
+button p {
+    font-family: "Lobster Two", sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+h1 {
+    font-family: "Italianno", cursive;
+    font-weight: 400;
+    font-size: clamp(3rem, 10vw, 5rem);
+}
+
+.miniGif {
+    height: auto;
+    width: 10vw;
+}
