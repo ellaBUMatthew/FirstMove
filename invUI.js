@@ -1,5 +1,8 @@
 const container2 = document.querySelector('.container2');
 const startArea = document.querySelector('.gameContainer h3');
+const container1 = document.querySelector('.container1');
+const yesBtn = document.querySelector('.yes');
+const noBtn = document.querySelector('.no');
 
 let holding = false;
 let autoContinue = false;
@@ -9,58 +12,53 @@ let raf = null;
 let lastTime = null;
 let hidden = false;
 
-const SPEED = 0.3;
+const SPEED = 0.5;
 
-if (localStorage.getItem("valentineAccepted") === "true") {
-    container2.classList.add('hidden');
-    container2.style.pointerEvents = 'none';
-    hidden = true;
-    opacity = 0;
+function resetState() {
+    hidden = false;
+    opacity = 1;
+    autoContinue = false;
+    target = 1;
+    lastTime = null;
+    raf = null;
+
+    container2.style.opacity = 1;
+    container2.style.display = '';
+    container2.style.pointerEvents = 'auto';
+    container1.style.pointerEvents = 'none';
 }
+
+window.onload = resetState;
 
 function updateTarget() {
     if (opacity <= 0.5) autoContinue = true;
-    if (autoContinue) target = 0;
-    else target = holding ? 0 : 1;
+    target = autoContinue ? 0 : (holding ? 0 : 1);
 }
 
 function animate(time) {
     if (hidden) return;
+
     if (!lastTime) lastTime = time;
     const dt = (time - lastTime) / 1000;
     lastTime = time;
 
     updateTarget();
 
-    if (Math.abs(opacity - target) > 0.0001) {
+    if (Math.abs(opacity - target) > 0.001) {
         if (opacity > target) opacity = Math.max(0, opacity - SPEED * dt);
         else opacity = Math.min(1, opacity + SPEED * dt);
+
         container2.style.opacity = opacity;
     }
 
-    if (opacity <= 0.5) {
-        autoContinue = true;
-        target = 0;
-    }
-
-    if (opacity <= 0) {
+    if (opacity <= 0.001) {
         opacity = 0;
         container2.style.opacity = 0;
-        container2.classList.add('hidden');
+        container2.style.display = 'none';
+        container2.style.pointerEvents = 'none';
+        container1.style.pointerEvents = 'auto';
         hidden = true;
 
-        setTimeout(() => {
-            container2.style.pointerEvents = 'none';
-        }, 50);
-
-        cancelAnimationFrame(raf);
-        raf = null;
-        lastTime = null;
-        return;
-    }
-
-    if (opacity >= 1 && target === 1 && !holding) {
-        container2.style.opacity = 1;
         cancelAnimationFrame(raf);
         raf = null;
         lastTime = null;
@@ -97,7 +95,6 @@ document.addEventListener('mouseup', stopHold);
 startArea.addEventListener('touchstart', (e) => { e.preventDefault(); startHold(); });
 document.addEventListener('touchend', stopHold);
 
-// --- Custom cursor
 const cursor = document.createElement('div');
 cursor.classList.add('cursor-circle');
 document.body.appendChild(cursor);
@@ -107,18 +104,14 @@ document.addEventListener('mousemove', (e) => {
     cursor.style.top = e.clientY + 'px';
 });
 
-const yesBtn = document.querySelector('.yes');
-const noBtn = document.querySelector('.no');
-
 [yesBtn, noBtn].forEach(btn => {
-    btn.addEventListener('mouseenter', () => { cursor.classList.add('combine'); });
-    btn.addEventListener('mouseleave', () => { cursor.classList.remove('combine'); });
+    btn.addEventListener('mouseenter', () => cursor.classList.add('combine'));
+    btn.addEventListener('mouseleave', () => cursor.classList.remove('combine'));
 });
 
 noBtn.style.position = 'relative';
 noBtn.addEventListener('mouseover', () => {
-    const container = document.querySelector('.container1');
-    const rect = container.getBoundingClientRect();
+    const rect = container1.getBoundingClientRect();
     const newX = Math.random() * (rect.width - noBtn.offsetWidth);
     const newY = Math.random() * (rect.height - noBtn.offsetHeight);
     noBtn.style.position = 'absolute';
@@ -128,9 +121,11 @@ noBtn.addEventListener('mouseover', () => {
 
 yesBtn.addEventListener('click', () => {
     alert("Yay! You said yes!");
-    localStorage.setItem("valentineAccepted", "true");
-    container2.classList.add('hidden');
-    container2.style.pointerEvents = 'none';
+
     opacity = 0;
+    container2.style.opacity = 0;
+    container2.style.display = 'none';
+    container2.style.pointerEvents = 'none';
+    container1.style.pointerEvents = 'auto';
     hidden = true;
 });
